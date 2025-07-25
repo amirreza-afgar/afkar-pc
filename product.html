@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>صفحه محصول - Afkar pc</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg header">
+    <div class="container">
+      <a class="navbar-brand text-light fw-bold" href="index.html">Afkar pc</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon" style="filter: invert(1);"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item px-3"><a class="nav-link active" href="index.html">صفحه اصلی</a></li>
+          <li class="nav-item px-3"><a class="nav-link" href="cart.html">🛒 سبد خرید</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container mt-5">
+    <div class="row">
+      <div class="col-md-6">
+        <img id="product-image" src="img/default.jpg" alt="محصول" class="img-fluid rounded shadow" />
+      </div>
+      <div class="col-md-6">
+        <h2 id="product-title">عنوان محصول</h2>
+        <p id="product-description">توضیح کوتاه درباره محصول</p>
+        <div class="mb-3">
+          <strong>قیمت:</strong> <span id="product-price" class="text-success fw-bold">---</span>
+          <span id="product-old-price" class="text-muted text-decoration-line-through ms-3">---</span>
+        </div>
+
+        <div class="mb-3">
+          <label for="shipping-method" class="form-label">روش ارسال :</label>
+          <select id="shipping-method" class="form-select">
+            <option value="standard">ارسال معمولی (2 تا 4 روز)</option>
+            <option value="express">ارسال سریع (1 روزه)</option>
+            <option value="inperson">تحویل حضوری</option>
+            <option value="international">ارسال بین‌المللی</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label for="payment-method" class="form-label">روش پرداخت :</label>
+          <select id="payment-method" class="form-select">
+            <option value="" disabled selected>انتخاب کنید</option>
+            <option value="online">پرداخت آنلاین</option>
+            <option value="cash">پرداخت نقدی در محل</option>
+            <option value="card">کارت به کارت</option>
+          </select>
+        </div>
+
+        <button class="btn btn-primary" onclick="addToCart()">افزودن به سبد خرید 🛒</button>
+      </div>
+    </div>
+  </main>
+
+  <footer class="mt-5 p-4 text-center bg-dark text-light">
+    تمامی حقوق محفوظ است © 2025 Afkar pc
+  </footer>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('id');
+
+    const products = {
+      1: {
+        title: "لپ تاپ ایسوس asuse",
+        price: "80.000.000 تومان",
+        oldPrice: "86.000.000 تومان",
+        image: "image/asus.webp",
+        description: "لپ‌تاپ قدرتمند با عملکرد بالا مناسب کارهای حرفه‌ای و گیمینگ"
+      },
+      2: {
+        title: "لپ تاپ msi thin 15",
+        price: "54.000.000 تومان",
+        oldPrice: "58.000.000 تومان",
+        image: "image/msi (1).webp",
+        description: "طراحی باریک و سبک، مناسب برای دانشجویان و کارهای روزمره"
+      },
+      3: {
+        title: "لپ تاپ lenovo loq",
+        price: "890.000.000 تومان",
+        oldPrice: "910.000.000 تومان",
+        image: "image/loq.webp",
+        description: "لپ‌تاپ گیمینگ قدرتمند با گرافیک بالا و سیستم خنک‌کننده حرفه‌ای"
+      },
+      4: {
+        title: "لپ تاپ surface book3",
+        price: "55.000.000 تومان",
+        oldPrice: "59.000.000 تومان",
+        image: "image/sor.webp",
+        description: "لپ‌تاپی شیک و هیبریدی با قابلیت استفاده به عنوان تبلت"
+      },
+      5: {
+        title: "لپ تاپ hp victus",
+        price: "55.000.000 تومان",
+        oldPrice: "60.000.000 تومان",
+        image: "image/msi (5).webp",
+        description: "لپ‌تاپ اقتصادی مناسب برای بازی و کارهای گرافیکی متوسط"
+      }
+    };
+
+    const product = products[id];
+    if (product) {
+      document.getElementById('product-title').textContent = product.title;
+      document.getElementById('product-description').textContent = product.description;
+      document.getElementById('product-price').textContent = product.price;
+      document.getElementById('product-old-price').textContent = product.oldPrice;
+      document.getElementById('product-image').src = product.image;
+    } else {
+      document.querySelector('main').innerHTML = '<h3 class="text-center">محصول موجود نیست</h3>';
+    }
+
+    function addToCart() {
+      const paymentSelect = document.getElementById('payment-method');
+      const paymentMethod = paymentSelect.value;
+
+      if (!paymentMethod) {
+        alert('لطفاً روش پرداخت را انتخاب کنید');
+        paymentSelect.focus();
+        return;
+      }
+
+      const shippingMethod = document.getElementById('shipping-method').value;
+
+      const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+      cart.push({
+        id,
+        title: product.title,
+        price: product.price,
+        image: product.image,
+        paymentMethod,
+        shippingMethod
+      });
+      localStorage.setItem('cart', JSON.stringify(cart));
+
+      alert('محصول با موفقیت به سبد خرید اضافه شد!');
+      window.location.href = 'cart.html';
+    }
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
